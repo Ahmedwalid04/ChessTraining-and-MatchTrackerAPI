@@ -1,0 +1,6 @@
+@ChessTrainingApi_HostAddress = http://localhost:5289
+
+GET {{ChessTrainingApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

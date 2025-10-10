@@ -1,0 +1,2 @@
+﻿namespace ChessTrainingApi.Controllers;
+public static partial class ControllersExtentions;
