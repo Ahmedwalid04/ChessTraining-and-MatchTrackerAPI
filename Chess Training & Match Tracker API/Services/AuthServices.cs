@@ -9,7 +9,6 @@ public class AuthServices(IUserServices userService, IConfiguration configuratio
 {
     public async ValueTask<User> RegisterAsync(User user)
     {
-        // Hash password before saving
         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
         await userService.AddUserAsync(user);
         return user;
@@ -25,7 +24,7 @@ public class AuthServices(IUserServices userService, IConfiguration configuratio
 
         string token = GenerateJwtToken(user);
 
-        return new AuthResponse { Token = token, User = user };
+        return new AuthResponse (token,user);
     }
 
     private string GenerateJwtToken(User user)
