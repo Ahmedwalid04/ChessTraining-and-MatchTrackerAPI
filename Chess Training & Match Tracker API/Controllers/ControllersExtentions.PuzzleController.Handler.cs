@@ -36,6 +36,11 @@ public partial class ControllersExtentions
         var puzzle = await puzzleService.RetrievePuzzleByIdAsync(puzzleId);
         return puzzle is not null ? Results.Ok(puzzle) : Results.NotFound();
     }
+    static async ValueTask<IResult> GetRandomPuzzleAsync(IPuzzleServices puzzleService)
+    {
+        var puzzles = await puzzleService.RetrieveRandomPuzzleAsync();
+        return Results.Ok(puzzles);
+    }
     static async ValueTask<IResult> DeletePuzzleByIdAsync(IPuzzleServices puzzleService, int puzzleId)
     {
         var puzzle = await puzzleService.RetrievePuzzleByIdAsync(puzzleId);
@@ -45,5 +50,23 @@ public partial class ControllersExtentions
         }
         await puzzleService.RemovePuzzleByIdAsync(puzzleId);
         return Results.NoContent();
+    }
+    static async ValueTask<IResult> SubmitPuzzleSolution(IPuzzleServices puzzleService,int puzzleId,SolutionRequest request)      
+    {
+        var puzzle = await puzzleService.RetrievePuzzleByIdAsync(puzzleId);
+        if (puzzle is null)
+        {
+            return Results.NotFound();
+        }
+        var solution = request.Solution;
+        if (string.IsNullOrEmpty(solution))
+        {
+            return Results.BadRequest("Solution cannot be empty.");
+        }
+        if (puzzle.Solution == solution)
+        {
+            return Results.Ok("Correct Solution");
+        }
+        return Results.BadRequest("Incorrect Solution."); 
     }
 }

@@ -7,8 +7,8 @@ public partial class StorageBroker
     {
         using var connection = CreateConnection();
         await connection.ExecuteAsync(
-            @"INSERT INTO Puzzle (Id, FEN, Solution, Theme)
-              VALUES (@Id, @FEN, @Solution, @Theme);", puzzle);
+            @"INSERT INTO Puzzle (FEN, Solution, Rating, Themes)
+                VALUES (@FEN, @Solution, @Rating, @Themes)", puzzle);
     }
     public async ValueTask<IEnumerable<Puzzle>> SelectAllPuzzlesAsync()
     {
@@ -21,6 +21,12 @@ public partial class StorageBroker
         return await connection.QueryFirstOrDefaultAsync<Puzzle>(
             @"SELECT * FROM Puzzle WHERE Id = @puzzleId;", new { puzzleId });
     }
+    public async ValueTask<Puzzle> SelectRandomPuzzleAsync()
+    {
+        using var connection = CreateConnection();
+        return await connection.QueryFirstOrDefaultAsync<Puzzle>(
+            @"SELECT * FROM Puzzle ORDER BY RANDOM() LIMIT 1;");
+    }
     public async ValueTask UpdatePuzzleAsync(Puzzle puzzle)
     {
         using var connection = CreateConnection();
@@ -28,7 +34,8 @@ public partial class StorageBroker
             @"UPDATE Puzzle 
               SET FEN = @FEN,
                   Solution = @Solution,
-                  Theme = @Theme
+                  Themes = @Themes,
+                    Rating = @Rating
               WHERE Id = @Id;", puzzle);
     }
     public async ValueTask DeletePuzzleByIdAsync(int puzzleId)

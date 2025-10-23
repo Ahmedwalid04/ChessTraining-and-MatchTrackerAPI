@@ -9,6 +9,8 @@ public class PuzzleServices (IStorageBroker storageBroker) : IPuzzleServices
         await storageBroker.SelectAllPuzzlesAsync();
     public async ValueTask<Puzzle> RetrievePuzzleByIdAsync(int puzzleId) =>
         await storageBroker.SelectPuzzleByIdAsync(puzzleId);
+    public async ValueTask<Puzzle> RetrieveRandomPuzzleAsync() =>
+        await storageBroker.SelectRandomPuzzleAsync();
     public async ValueTask ModifyPuzzleAsync(Puzzle puzzle) =>
         await storageBroker.UpdatePuzzleAsync(puzzle);
     public async ValueTask RemovePuzzleByIdAsync(int puzzleId) =>
