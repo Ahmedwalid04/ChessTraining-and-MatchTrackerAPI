@@ -3,7 +3,7 @@ using ChessTrainingApi.Services;
 namespace ChessTrainingApi.Controllers;
 public partial class ControllersExtentions
 {
-    static async ValueTask<IResult> PostPuzzleAsync(IPuzzleServices puzzleService, Puzzle puzzle)
+   public static async ValueTask<IResult> PostPuzzleAsync(IPuzzleServices puzzleService, Puzzle puzzle)
     {
         if (puzzle == null)
         {
@@ -12,7 +12,7 @@ public partial class ControllersExtentions
         await puzzleService.AddPuzzleAsync(puzzle);
         return Results.Created($"/puzzles/{puzzle.Id}", puzzle);
     }
-    static async ValueTask<IResult> PutPuzzleAsync(IPuzzleServices puzzleService, int puzzleId, Puzzle puzzle)
+    public static async ValueTask<IResult> PutPuzzleAsync(IPuzzleServices puzzleService, int puzzleId, Puzzle puzzle)
     {
         if (puzzle == null || puzzle.Id != puzzleId)
         {
@@ -26,22 +26,22 @@ public partial class ControllersExtentions
         await puzzleService.ModifyPuzzleAsync(puzzle);
         return Results.NoContent();
     }
-    static async ValueTask<IResult> GetAllPuzzlesAsync(IPuzzleServices puzzleService)
+   public static async ValueTask<IResult> GetAllPuzzlesAsync(IPuzzleServices puzzleService)
     {
         var puzzles = await puzzleService.RetrieveAllPuzzlesAsync();
         return Results.Ok(puzzles);
     }
-    static async ValueTask<IResult> GetPuzzleByIdAsync(IPuzzleServices puzzleService, int puzzleId)
+   public static async ValueTask<IResult> GetPuzzleByIdAsync(IPuzzleServices puzzleService, int puzzleId)
     {
         var puzzle = await puzzleService.RetrievePuzzleByIdAsync(puzzleId);
         return puzzle is not null ? Results.Ok(puzzle) : Results.NotFound();
     }
-    static async ValueTask<IResult> GetRandomPuzzleAsync(IPuzzleServices puzzleService)
+    public static async ValueTask<IResult> GetRandomPuzzleAsync(IPuzzleServices puzzleService)
     {
         var puzzles = await puzzleService.RetrieveRandomPuzzleAsync();
         return Results.Ok(puzzles);
     }
-    static async ValueTask<IResult> DeletePuzzleByIdAsync(IPuzzleServices puzzleService, int puzzleId)
+    public static async ValueTask<IResult> DeletePuzzleByIdAsync(IPuzzleServices puzzleService, int puzzleId)
     {
         var puzzle = await puzzleService.RetrievePuzzleByIdAsync(puzzleId);
         if (puzzle is null)
@@ -51,7 +51,7 @@ public partial class ControllersExtentions
         await puzzleService.RemovePuzzleByIdAsync(puzzleId);
         return Results.NoContent();
     }
-    static async ValueTask<IResult> SubmitPuzzleSolution(IPuzzleServices puzzleService,int puzzleId,SolutionRequest request)      
+    public static async ValueTask<IResult> SubmitPuzzleSolution(IPuzzleServices puzzleService,int puzzleId,SolutionRequest request)      
     {
         var puzzle = await puzzleService.RetrievePuzzleByIdAsync(puzzleId);
         if (puzzle is null)
